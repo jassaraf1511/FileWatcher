@@ -1,0 +1,93 @@
+IF OBJECT_ID('SP_Insert_RelatedRemittanceInformation', 'P') IS NOT NULL 
+BEGIN 
+DROP PROC SP_Insert_RelatedRemittanceInformation
+END
+GO
+  CREATE PROCEDURE SP_Insert_RelatedRemittanceInformation @MessageReference varchar(32) = NULL,
+  @MessageOrigin varchar(10) = NULL,
+  @OrigineName varchar(64) = NULL,
+  @IncomingOutGoing varchar(16) = NULL,
+  @MessageId varchar(32) = NULL,
+  @SequenceNumber int = NULL,
+  @RemittanceIdentification varchar(35) = NULL,
+  @RemittanceLocationMethod varchar(4) = NULL,
+  @RemittanceElectronicAddress varchar(2048) = NULL,
+  @RemittanceName varchar(140) = NULL,
+  @AddressType varchar(4) = NULL,
+  @Department varchar(70) = NULL,
+  @SubDepartment varchar(70) = NULL,
+  @StreetName varchar(70) = NULL,
+  @BuildingNumber varchar(16) = NULL,
+  @PostCode varchar(16) = NULL,
+  @TownName varchar(35) = NULL,
+  @CountryStateSubDivision varchar(35) = NULL,
+  @Country varchar(2) = NULL,
+  @AddressLine1 varchar(70) = NULL,
+  @AddressLine2 varchar(70) = NULL,
+  @AddressLine3 varchar(70) = NULL,
+  @AddressLine4 varchar(70) = NULL,
+  @AddressLine5 varchar(70) = NULL,
+  @AddressLine6 varchar(70) = NULL,
+  @AddressLine7 varchar(70) = NULL,
+  @ID numeric(18, 0) out AS BEGIN
+INSERT INTO
+  dbo.RelatedRemittanceInformation (
+    MessageReference,
+    MessageOrigin,
+    OrigineName,
+    IncomingOutGoing,
+    MessageId,
+    SequenceNumber,
+    RemittanceIdentification,
+    RemittanceLocationMethod,
+    RemittanceElectronicAddress,
+    RemittanceName,
+    AddressType,
+    Department,
+    SubDepartment,
+    StreetName,
+    BuildingNumber,
+    PostCode,
+    TownName,
+    CountryStateSubDivision,
+    Country,
+    AddressLine1,
+    AddressLine2,
+    AddressLine3,
+    AddressLine4,
+    AddressLine5,
+    AddressLine6,
+    AddressLine7
+  )
+output inserted.*
+SELECT
+  @MessageReference,
+  @MessageOrigin,
+  @OrigineName,
+  @IncomingOutGoing,
+  @MessageId,
+  @SequenceNumber,
+  @RemittanceIdentification,
+  @RemittanceLocationMethod,
+  @RemittanceElectronicAddress,
+  @RemittanceName,
+  @AddressType,
+  @Department,
+  @SubDepartment,
+  @StreetName,
+  @BuildingNumber,
+  @PostCode,
+  @TownName,
+  @CountryStateSubDivision,
+  @Country,
+  @AddressLine1,
+  @AddressLine2,
+  @AddressLine3,
+  @AddressLine4,
+  @AddressLine5,
+  @AddressLine6,
+  @AddressLine7;
+set
+  @ID = @@IDENTITY
+END
+GO

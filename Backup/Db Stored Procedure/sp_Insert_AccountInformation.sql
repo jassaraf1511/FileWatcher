@@ -1,0 +1,101 @@
+IF OBJECT_ID('sp_insert_InterfaceLoadHistory', 'P') IS NOT NULL 
+BEGIN 
+	DROP PROC sp_insert_InterfaceLoadHistory
+END
+GO
+  CREATE PROCEDURE sp_insert_InterfaceLoadHistory 
+  @IncomingOutGoing varchar(16) = NULL,
+  @Filename varchar(256) = NULL,
+  @InterfaceIdentifier varchar(64) = NULL,
+  @ClientId varchar(63) = NULL,
+  @InterfaceName varchar(64) = NULL,
+  @InterfaceType varchar(32) = NULL,
+  @LoadProcessId varchar(32) = NULL,
+  @LoadProcessName varchar(32) = NULL,
+  @LoadDate datetime = NULL,
+  @ProcessedDate datetime = NULL,
+  @BusinessDate datetime = NULL,
+  @FileOrigin varchar(128) = NULL,
+  @FileDestination varchar(128) = NULL,
+  @FileArchived varchar(128) = NULL,
+  @FileReceivedDate datetime = NULL,
+  @RecordsNumber int = NULL,
+  @RecordProcessed int = NULL,
+  @RecordRejected int = NULL,
+  @FileSize int = NULL,
+  @RejectReasonCode varchar(32) = NULL,
+  @RejectReasonDescription varchar(512) = NULL,
+  @LoadStatus varchar(16) = NULL,
+  @UserId varchar(32) = NULL,
+  @DataFileContent varbinary = NULL,
+  @CreationDate datetime = NULL,
+  @CreatorId varchar(32) = NULL,
+  @UpdateDate datetime = NULL,
+  @UpdatorId varchar(32) = NULL,
+  @ID numeric(18, 0) out
+  
+  AS BEGIN
+INSERT INTO
+  dbo.InterfaceLoadHistory (
+    IncomingOutGoing,
+    Filename,
+    InterfaceIdentifier,
+    ClientId,
+    InterfaceName,
+    InterfaceType,
+    LoadProcessId,
+    LoadProcessName,
+    LoadDate,
+    ProcessedDate,
+    BusinessDate,
+    FileOrigin,
+    FileDestination,
+    FileArchived,
+    FileReceivedDate,
+    RecordsNumber,
+    RecordProcessed,
+    RecordRejected,
+    FileSize,
+    RejectReasonCode,
+    RejectReasonDescription,
+    LoadStatus,
+    UserId,
+    DataFileContent,
+    CreationDate,
+    CreatorId,
+    UpdateDate,
+    UpdatorId
+  )
+    output inserted.*
+  SELECT
+  @IncomingOutGoing,
+  @Filename,
+  @InterfaceIdentifier,
+  @ClientId,
+  @InterfaceName,
+  @InterfaceType,
+  @LoadProcessId,
+  @LoadProcessName,
+  @LoadDate,
+  @ProcessedDate,
+  @BusinessDate,
+  @FileOrigin,
+  @FileDestination,
+  @FileArchived,
+  @FileReceivedDate,
+  @RecordsNumber,
+  @RecordProcessed,
+  @RecordRejected,
+  @FileSize,
+  @RejectReasonCode,
+  @RejectReasonDescription,
+  @LoadStatus,
+  @UserId,
+  @DataFileContent,
+  @CreationDate,
+  @CreatorId,
+  @UpdateDate,
+  @UpdatorId;
+  set @ID=@@IDENTITY
+END
+GO
