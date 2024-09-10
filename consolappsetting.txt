@@ -1,0 +1,114 @@
+AppSetting Sample
+
+https://stackoverflow.com/questions/65110479/how-to-get-values-from-appsettings-json-in-a-console-application-using-net-core
+------------------------------
+https://lock29down.medium.com/using-iconfiguration-inside-console-app-net-core-5564c1493e0e
+
+Here are the Nuget packages we need to install into our Console App to get the expected functionality.
+
+Microsoft.Extensions.Configuration
+Microsoft.Extensions.Configuration.Json
+Microsoft.Extensions.Configuration.CommandLine
+Microsoft.Extensions.Configuration.Binder
+Microsoft.Extensions.Configuration.EnvironmentVariables
+However, if you think you’ll be comfortable adding the package reference inside your .csproj file project. Just copy and paste the code below.
+
+Note: Change the version to suit your needs.
+
+ <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-preview.2.23128.3" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0-preview.2.23128.3" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0-preview.2.23128.3" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0-preview.2.23128.3" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-preview.2.23128.3" />
+  </ItemGroup>
+
+
+Before we get into the coding part, install all of the required Nuget packages.
+
+Just copy and paste the code below, and don’t forget to create an appsettings.json file and set the copy to the output directory to copy always in case you forgot.
+
+Let’s Write the Code
+Right after that, you can copy and paste the code below inside the Program.cs file.
+
+
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional:true , reloadOnChange:true)
+    .AddEnvironmentVariables()
+    .AddCommandLine(args)
+    .Build();
+Now, let’s try to create a simple section inside our appsettings.json.
+
+Let’s call it ServerConnection.
+
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Debug",
+            "System": "Information",
+            "Microsoft": "Information"
+        }
+    },
+    "ServerConnection": {
+        "Url" : "localhost",
+        "Port": "8080",
+        "IsSSL": "false",
+        "Password": "helloP@ssw0rd"
+    }
+}
+Let’s try to get the Url, Port, IsSSL, and Passwordvalues first.
+
+var serverConnection1 = configuration.GetSection("ServerConnection");
+
+var url = serverConnection1.GetValue<string>("Url");
+var port = serverConnection1.GetValue<int>("Port");
+var isSsl = serverConnection1.GetValue<bool>("IsSSL");
+var password = serverConnection1.GetValue<string>("Password");
+Let’s try to see what’s inside the ServerConnection class.
+
+public class ServerConnection
+{
+    public string Url { get; set; }
+    public string Password { get; set; }
+    public int Port { get; set; }
+    public bool IsSSL { get; set; }
+
+    public override string ToString()
+    {
+        return $"${this.Url}:${this.Port},password=${this.Password},ssl=${this.IsSSL}";
+    }
+}
+The code above will represent the ServerConnection appsettings.json. Moreover, we have overridden the ToString method for some debugging purposes.
+
+var serverConnection = new ServerConnection();
+configuration.GetSection("ServerConnection").Bind(serverConnection);
+
+Console.WriteLine(serverConnection);
+For the complete source code on the Program.cs here you go.
+
+using ConsoleAppConfig;
+using Microsoft.Extensions.Configuration;
+
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional:true , reloadOnChange:true)
+    .AddEnvironmentVariables()
+    .AddCommandLine(args)
+    .Build();
+
+var serverConnection1 = configuration.GetSection("ServerConnection");
+
+var url = serverConnection1.GetValue<string>("Url");
+var port = serverConnection1.GetValue<int>("Port");
+var isSsl = serverConnection1.GetValue<bool>("IsSSL");
+var password = serverConnection1.GetValue<string>("Password");
+
+var serverConnection = new ServerConnection();
+configuration.GetSection("ServerConnection").Bind(serverConnection);
+
+Console.WriteLine(serverConnection);
+
+Console.Read();
+
+https://github.com/jindeveloper/CsharpConsoleAppConfig/tree/master
