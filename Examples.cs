@@ -229,7 +229,7 @@ namespace MyApplication
     }
 }
 
-
+https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/covariance-contravariance/creating-variant-generic-interfaces
 
 private void LoadITagBusinessClass()
         {
@@ -262,3 +262,79 @@ namespace MessagingStandards.Entities.SWIFT.MT.Tags
         T MapSwiftDataToObject<T>(string resultText) where T : class, new();
     }
 }		
+
+interface ICovariant<out R>
+{
+    R GetSomething();
+}
+class SampleImplementation<R> : ICovariant<R>
+{
+    public R GetSomething()
+    {
+        // Some code.
+        return default(R);
+    }
+}interface ICovariant<out R>
+{
+    R GetSomething();
+}
+class SampleImplementation<R> : ICovariant<R>
+{
+    public R GetSomething()
+    {
+        // Some code.
+        return default(R);
+    }
+}
+
+https://dotnetteach.com/blog/generic-interfaces-in-csharp
+public interface IRepository<T>
+{
+    void Add(T item);
+    T FindById(int id);
+    IEnumerable<T> GetAll();
+}
+public class ProductRepository : IRepository<Product>
+{
+    private List<Product> _products = new List<Product>();
+
+    public void Add(Product item)
+    {
+        _products.Add(item);
+    }
+
+    public Product FindById(int id)
+    {
+        return _products.FirstOrDefault(p => p.Id == id);
+    }
+
+    public IEnumerable<Product> GetAll()
+    {
+        return _products;
+    }
+}
+public class CustomerRepository : IRepository<Customer>
+{
+    private List<Customer> _customers = new List<Customer>();
+
+    public void Add(Customer item)
+    {
+        _customers.Add(item);
+    }
+
+    public Customer FindById(int id)
+    {
+        return _customers.FirstOrDefault(c => c.Id == id);
+    }
+
+    public IEnumerable<Customer> GetAll()
+    {
+        return _customers;
+    }
+}
+public interface IRepository<T> where T : IEntity
+{
+    void Add(T item);
+    T FindById(int id);
+    IEnumerable<T> GetAll();
+}
