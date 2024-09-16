@@ -338,3 +338,56 @@ public interface IRepository<T> where T : IEntity
     T FindById(int id);
     IEnumerable<T> GetAll();
 }
+namespace AspNetCoreWebApi6.Models
+{
+    public interface InterfaceTest
+    {
+        T Mytest<T>(string param);
+        T Mytest<T>(string param, T Myobjet);
+    }
+}
+namespace AspNetCoreWebApi6.Models
+{
+    public class TestInterface : InterfaceTest
+    {
+        string test1 { get; set; }
+        Movie movie= new Movie();
+       
+
+
+        public T Mytest<T>(string param, T movie)
+        {
+            this.movie.Title = "AA";
+            this.movie.ReleaseDate = DateTime.Now;
+
+            return movie;
+        }
+
+        T InterfaceTest.Mytest<T>(string param)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+using Microsoft.EntityFrameworkCore;
+
+namespace AspNetCoreWebApi6.Models
+{
+    public class MovieContext : DbContext
+    {
+        //private Movie movie;
+
+        public MovieContext(DbContextOptions<MovieContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<Movie> Movies { get; set; } = null!;
+        public void mytest()
+        {
+            TestInterface test1= new TestInterface();
+            Movie m = new();
+            Movie movie = test1.Mytest<Movie>("testinG",m);
+        }
+    }
+}
