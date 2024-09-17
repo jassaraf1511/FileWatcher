@@ -457,3 +457,5 @@ namespace AspNetCoreWebApi6.Models
     
 }
 
+https://theburningmonk.com/2010/09/net-tips-how-to-determine-if-a-type-implements-a-generic-interface-type/
+https://spin.atomicobject.com/generics-type-constraints/
