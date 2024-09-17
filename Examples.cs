@@ -391,3 +391,69 @@ namespace AspNetCoreWebApi6.Models
         }
     }
 }
+-------
+
+namespace AspNetCoreWebApi6.Models
+{
+    public interface InterfaceTest<T>   
+    {
+        public T MyTest<T>(string param);
+        T Mytest<T>(string param, T Myobjet);
+    }
+}
+
+using System.Data.Common;
+
+namespace AspNetCoreWebApi6.Models
+{
+    public class TestInterface : InterfaceTest<Movie>
+    {
+        Movie ? movie;
+        
+
+        public Movie Mytest<T>(string param, T movie)
+        {
+            this.movie=new Movie();
+            this.movie.Title = param;   
+            this.movie.Title = "AA";
+            this.movie.ReleaseDate = DateTime.Now;
+
+            return this.movie;
+        }
+
+        public string MyTest<T>(string param)
+        {
+            return "";
+        }
+
+        
+    }
+}
+
+
+using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using System;
+namespace AspNetCoreWebApi6.Models
+{
+    public class MovieContext : DbContext
+    {
+        private const string TypeName = "AspNetCoreWebApi6";
+
+        public MovieContext(DbContextOptions<MovieContext> options)
+            : base(options)
+        {
+        }
+
+        public DbSet<Movie> Movies { get; set; } = null!;
+
+        public void test()
+        {
+            TestInterface testa= new TestInterface();
+            Movie movie = testa.Mytest("hello", new Movie());
+        }
+   
+    }
+    
+}
+
