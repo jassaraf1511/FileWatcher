@@ -143,7 +143,9 @@ public static T MapDataRowToClass<T>(DataRow row) where T : new()
 	db command creator
 	https://gist.github.com/dibley1973/bf4391ee08554e46dcd3
 	
-	
+
+
+https://stackoverflow.com/questions/1383406/using-stored-procedures-in-c-sharp
 	// Create Class instance
 	
 using System;
