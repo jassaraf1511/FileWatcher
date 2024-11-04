@@ -7,7 +7,10 @@ https://hackernoon.com/building-an-end-to-end-dynamic-c-web-api-with-dapper-for-
 
 https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
 
-
+dbcontext
+https://github.com/dotnet/efcore/issues/20675
+https://jasonterando.medium.com/net-core-console-applications-with-dependency-injection-234eac5a4040
+https://www.ottorinobruni.com/how-to-implement-dependency-injection-in-dotnet-csharp-console-app-guide-using-visual-studio-code/
 public void ConfigureServices(IServiceCollection services)
 {
     services.AddControllers();
