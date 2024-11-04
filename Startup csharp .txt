@@ -1,0 +1,198 @@
+https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
+
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+
+    services.AddDbContext<ApplicationDbContext>(
+        options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+}
+
+public class ApplicationDbContext : DbContext
+{
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+    {
+    }
+}
+
+
+public class MyController
+{
+    private readonly ApplicationDbContext _context;
+
+    public MyController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
+}
+
+
+public void ConfigureServices(IServiceCollection services)
+{
+    var connectionString = "connection string to database";
+
+    services.AddDbContext<MyContext>(ServiceLifetime.Scoped);
+}
+
+
+public void ConfigureServices(IServiceCollection services)
+{
+    var connectionString = "connection string to database";
+
+    services.AddDbContext<MyContext>(options => options.UseSqlServer(connectionString));
+}
+
+https://stackoverflow.com/questions/49972591/accessing-dbcontext-in-a-c-sharp-console-application
+
+ private static SiteService _siteService;
+    private static ApplicationDbContext _appDbContext;
+
+    public static void Main()
+    {
+        var services = new ServiceCollection();                      
+
+        services.AddTransient<ISiteInterface, SiteRepo>();
+        services.AddTransient<SiteService>();
+        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer("blah-blah"));            
+
+        var serviceProvider = services.BuildServiceProvider();                                             
+        _siteService = serviceProvider.GetService<SiteService>();
+        _appDbContext = serviceProvider.GetService<ApplicationDbContext>();    
+        GetData();
+    }
+	
+	
+	https://austinhanson.com/c-sharp-net-core-console-app-di-and-serilog-getting-started/
+	
+	https://stackoverflow.com/questions/65231269/how-to-setup-the-di-container-in-a-net-core-console-app
+	
+	
+	https://www.c-sharpcorner.com/article/using-dependency-injection-in-net-console-apps/
+	
+	
+	
+	
+	https://stackoverflow.com/questions/39083372/how-to-read-connection-string-in-net-core
+	
+	//appsettings.json
+	{
+   "AppConfigSection": {
+      "IsLocal": true
+   },
+   "ConnectionStringsConfigSection": {
+      "ServerConnectionString":"Server=.;Database=MyDb;Trusted_Connection=True;",
+      "LocalConnectionString":"Data Source=MyDb.db",
+   },
+}
+	//
+	
+	AppConfigSection.cs
+
+public class AppConfigSection: IConfigSection
+{
+    public bool IsLocal { get; set; }
+}
+ConnectionStringsConfigSection.cs
+
+public class ConnectionStringsConfigSection : IConfigSection
+{
+    public string ServerConnectionString { get; set; }
+    public string LocalConnectionString { get; set; }
+
+    public ConnectionStringsConfigSection()
+    {
+        // set default values to avoid null reference if
+        // section is not present in appsettings.json
+        ServerConnectionString = string.Empty;
+        LocalConnectionString = string.Empty;
+    }
+}
+And finally, a usage example:
+
+Startup.cs
+
+public class Startup
+{
+    public Startup(IConfiguration configuration)
+    {
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // some stuff
+
+        var app = Configuration.GetConfigSection<AppConfigSection>();
+        var connectionStrings = Configuration.GetConfigSection<ConnectionStringsConfigSection>();
+
+        services.AddDbContext<AppDbContext>(options =>
+        {
+            if (app.IsLocal)
+            {
+                options.UseSqlite(connectionStrings.LocalConnectionString);
+            }
+            else
+            {
+                options.UseSqlServer(connectionStrings.ServerConnectionString);
+            }
+        });
+
+        // other stuff
+    }
+}
+
+This post shows you how to get a connection string from appsettings.json in ASP.NET Core
+You can easily find your connection string add in appsettings.json file.
+
+1
+2
+3
+"ConnectionStrings": {
+    "DefaultConnection": "Server=.;Database=dbtest;User Id=sa;Password=123@qaz;Connection Timeout=3000;"
+}
+Creating a AppDbConnection class
+
+1
+2
+3
+4
+public class AppDbConnection
+{
+    public string DefaultConnectionString { get; set; }
+}
+Opening your Startup class, then add a configuration as shown below.
+
+1
+2
+3
+4
+services.Configure<AppDbConnection>(options =>
+{
+   options.DefaultConnectionString = Configuration.GetConnectionString("DefaultConnection");
+});
+You can get connection string from your repository as shown below.
+
+1
+2
+3
+4
+5
+private readonly string _connectionString;
+public DataRepository(IOptions<AppDbConnection> config)
+{
+   _connectionString = config.Value.DefaultConnectionString;
+}
+ 
+ https://stackoverflow.com/questions/41407221/startup-cs-in-a-self-hosted-net-core-console-application
+
+	
+	
+	
+	https://dev.to/costinmanda/creating-a-console-app-with-dependency-injection-in-net-core-27ad
+	https://www.c-sharpcorner.com/article/using-dependency-injection-in-net-console-apps/
+	
+	
