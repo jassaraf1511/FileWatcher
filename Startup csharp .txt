@@ -196,3 +196,10 @@ public DataRepository(IOptions<AppDbConnection> config)
 	https://www.c-sharpcorner.com/article/using-dependency-injection-in-net-console-apps/
 	
 	
+	
+	
+	
+	
+	https://stackoverflow.com/questions/41407221/startup-cs-in-a-self-hosted-net-core-console-application
+	https://github.com/sonicmouse/Host.CreateDefaultBuilder.Example/blob/master/CreateDefaultHostBuilderExample/Startup.cs
+	https://www.freecodecamp.org/news/use-dapper-in-your-dotnet-projects/
