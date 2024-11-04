@@ -2,7 +2,8 @@
 Dapper :
 https://code-maze.com/using-dapper-with-asp-net-core-web-api/
 
-
+https://www.freecodecamp.org/news/use-dapper-in-your-dotnet-projects/
+https://hackernoon.com/building-an-end-to-end-dynamic-c-web-api-with-dapper-for-data-access
 
 https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
 
