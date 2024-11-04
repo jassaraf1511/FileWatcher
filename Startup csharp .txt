@@ -1,3 +1,9 @@
+
+Dapper :
+https://code-maze.com/using-dapper-with-asp-net-core-web-api/
+
+
+
 https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
 
 
