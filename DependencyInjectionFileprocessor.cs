@@ -1,5 +1,5 @@
 //Dapper
-
+https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
 https://www.c-sharpcorner.com/article/api-development-using-dapper-and-microsoft-asp-net-core-web-api/ (good
 https://stackoverflow.com/questions/43058497/dependency-injection-with-netcore-for-dal-and-connection-string
 https://www.c-sharpcorner.com/article/using-dapper-for-data-access-in-asp-net-core-applications/
