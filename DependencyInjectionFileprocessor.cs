@@ -20,7 +20,9 @@ https://stackoverflow.com/questions/38878140/how-can-i-implement-dbcontext-conne
 
 
 https://www.c-sharpcorner.com/article/using-dependency-injection-in-net-console-apps/
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 
 //The AgencyContext class would look like this:
     static IHostBuilder CreateHostBuilder(string[] strings)
