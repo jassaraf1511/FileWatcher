@@ -25,37 +25,35 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
 //The AgencyContext class would look like this:
-    static IHostBuilder CreateHostBuilder(string[] strings)
-    {
-       
-        return Host.CreateDefaultBuilder()
-            .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                })
-                .UseSerilog((hostContext, loggerConfiguration) =>
-                {
-                    loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
-                })
-             .ConfigureServices((hostContext, services) =>
-             {
-                 services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection")));
-                 services.AddTransient<Application>();
-
-                 services.AddTransient<IDbConnection>((sp) => new SqlConnection(hostContext.Configuration.GetConnectionString("DefaultConnection")));
-              
-                 services.AddTransient<ISwiftFilesProcessor, SwiftFilesProcessor>();
-                 services.AddTransient<ImessageTrace, MessageTrace>();
-
-             })
-            .ConfigureAppConfiguration(app =>
+ static IHostBuilder CreateHostBuilder(string[] strings)
+{
+   
+    return Host.CreateDefaultBuilder()
+        .ConfigureLogging(logging =>
             {
-                app.AddJsonFile("appsettings.json");
+                logging.ClearProviders();
             })
-            .UseWindowsService();
-           
-using Microsoft.EntityFrameworkCore;
+            .UseSerilog((hostContext, loggerConfiguration) =>
+            {
+                loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
+            })
+         .ConfigureServices((hostContext, services) =>
+         {
+             
+             services.AddTransient<Application>();
+
+             services.AddTransient<IDbConnection>((sp) => new SqlConnection(hostContext.Configuration.GetConnectionString("DefaultConnection")));
+             services.AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection")));
+             services.AddTransient<ISwiftFilesProcessor, SwiftFilesProcessor>();
+             services.AddTransient<ImessageTrace, MessageTrace>();
+
+         })
+        .ConfigureAppConfiguration(app =>
+        {
+            app.AddJsonFile("appsettings.json");
+        })
+        .UseWindowsService();sing Microsoft.EntityFrameworkCore;
 
 namespace CallCenter.Entities
 {
