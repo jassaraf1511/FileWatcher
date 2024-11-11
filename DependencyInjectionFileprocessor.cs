@@ -1,3 +1,11 @@
+//Dapper
+
+https://www.c-sharpcorner.com/article/api-development-using-dapper-and-microsoft-asp-net-core-web-api/ (good
+https://stackoverflow.com/questions/43058497/dependency-injection-with-netcore-for-dal-and-connection-string
+https://www.c-sharpcorner.com/article/using-dapper-for-data-access-in-asp-net-core-applications/
+https://stackoverflow.com/questions/69472240/asp-net-6-identity-sqlite-services-adddbcontext-how
+https://reintech.io/blog/integrating-dapper-dependency-injection-dotnet-core
+
 https://learn.microsoft.com/fr-fr/dotnet/core/extensions/dependency-injection-usage
 https://www.c-sharpcorner.com/article/using-dependency-injection-in-net-console-apps/
 https://github.com/csandun/ConsoleAppWithDI/tree/master
@@ -15,7 +23,36 @@ https://www.c-sharpcorner.com/article/using-dependency-injection-in-net-console-
 
 
 //The AgencyContext class would look like this:
+    static IHostBuilder CreateHostBuilder(string[] strings)
+    {
+       
+        return Host.CreateDefaultBuilder()
+            .ConfigureLogging(logging =>
+                {
+                    logging.ClearProviders();
+                })
+                .UseSerilog((hostContext, loggerConfiguration) =>
+                {
+                    loggerConfiguration.ReadFrom.Configuration(hostContext.Configuration);
+                })
+             .ConfigureServices((hostContext, services) =>
+             {
+                 services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection")));
+                 services.AddTransient<Application>();
 
+                 services.AddTransient<IDbConnection>((sp) => new SqlConnection(hostContext.Configuration.GetConnectionString("DefaultConnection")));
+              
+                 services.AddTransient<ISwiftFilesProcessor, SwiftFilesProcessor>();
+                 services.AddTransient<ImessageTrace, MessageTrace>();
+
+             })
+            .ConfigureAppConfiguration(app =>
+            {
+                app.AddJsonFile("appsettings.json");
+            })
+            .UseWindowsService();
+           
 using Microsoft.EntityFrameworkCore;
 
 namespace CallCenter.Entities
