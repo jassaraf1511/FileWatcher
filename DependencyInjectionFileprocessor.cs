@@ -1,3 +1,11 @@
+
+ ITag result = (from farmer in message.Block4
+               where farmer.TagName.Substring(0, 2) == "20"
+               where farmer.Qualifier == "SEME"
+               select farmer).First();
+Console.WriteLine(result.Value);
+https://dotnettutorials.net/lesson/first-and-firstordefault-methods-in-linq/
+
 //Dapper
 https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
 https://www.c-sharpcorner.com/article/api-development-using-dapper-and-microsoft-asp-net-core-web-api/ (good
