@@ -1,3 +1,54 @@
+private int findItemIndex(TagIdEnum tagId, TagQualifiertEnum qualifierId)
+{
+    if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
+    if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
+    try
+    {
+        string searchTag = Enum.GetName(typeof(TagIdEnum), tagId);
+        string searchQual = Enum.GetName(typeof(TagQualifiertEnum), qualifierId);
+        IEnumerable<int> indexes = (from item1 in this.parsedMessage.Block4
+                                    where item1.TagId == (int)tagId
+                                    where item1.Qualifier == searchQual
+                                    select this.parsedMessage.Block4.IndexOf(item1));
+        Console.WriteLine(indexes.FirstOrDefault());
+        return indexes.FirstOrDefault();
+    }
+    catch (Exception e)
+    {
+        return 0;
+    }
+
+
+private int findItemIndex<T> (T item, TagIdEnum tagId, TagQualifiertEnum qualifierId)
+{
+    if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
+    if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
+    try
+    {
+        string searchTag = Enum.GetName(typeof(TagIdEnum), tagId);
+        string searchQual = Enum.GetName(typeof(TagQualifiertEnum), qualifierId);
+        IEnumerable<int> indexes = (from item1 in this.parsedMessage.Block4
+                                    where item1.TagId == (int)tagId
+                                    where item1.Qualifier == searchQual
+                                    select this.parsedMessage.Block4.IndexOf(item1));
+        Console.WriteLine(indexes.FirstOrDefault());
+        return indexes.FirstOrDefault();
+    }
+    catch (Exception e)
+    {
+        return 0;
+    }
+
+}
+https://stackoverflow.com/questions/21877454/linq-get-all-items-between-2-matching-elements
+var startIndex = list.IndexOf(begin);
+ var endIndex = list.IndexOf(end);
+ var result = list.Skip(startIndex + 1).Take(endIndex - 1 - startIndex);
+
+
+https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
+
+
 USE [FundWireInterfaceDB] 
 GO 
 
