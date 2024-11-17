@@ -6,22 +6,41 @@
 Console.WriteLine(result.Value);
 
 
-Select
-SPECIFIC_NAME,
-ORDINAL_POSITION,
-PARAMETER_MODE,
-IS_RESULT,
-PARAMETER_NAME,
-DATA_TYPE,
-CHARACTER_MAXIMUM_LENGTH,
-CHARACTER_OCTET_LENGTH,
-NUMERIC_PRECISION,
-NUMERIC_PRECISION_RADIX,
-NUMERIC_SCALE,
-DATETIME_PRECISION
-from INFORMATION_SCHEMA.PARAMETERS
-Where SPECIFIC_NAME ='SP_Insert_FedWireMsgRepo'
+ParameterName
+ParameterType
+ParameterLength
+ParameterPrec
+ParameterScale
+ParameterMode
+ParameterPosition
+ParameterIsResult
+ParameterCollation
 
+
+
+  
+  select 
+  'ParameterName' = a.name, 
+  'ParameterType' = type_name(a.user_type_id), 
+  'ParameterLength' = a.max_length, 
+  'ParameterPrec' = case when type_name(a.system_type_id) = 'uniqueidentifier' then precision else OdbcPrec(
+    a.system_type_id, a.max_length, a.precision
+  ) end, 
+  'ParameterScale' = OdbcScale(a.system_type_id, a.scale), 
+  'ParameterMode' = b.PARAMETER_MODE, 
+  'ParameterPosition' = b.ORDINAL_POSITION, 
+  'ParameterIsResult' = b.IS_RESULT, 
+  'ParameterCollation' = convert(
+    sysname, 
+    case when a.system_type_id in (35, 99, 167, 175, 231, 239) then ServerProperty('collation') end
+  ) 
+from 
+  sys.parameters a 
+  inner join INFORMATION_SCHEMA.PARAMETERS b on SPECIFIC_NAME = OBJECT_NAME(object_id) 
+  and b.PARAMETER_NAME = a.name 
+where 
+  object_id = object_id('SP_Insert_FedWireMsgRepo')
+	  
 https://dotnettutorials.net/lesson/first-and-firstordefault-methods-in-linq/
 
 delegate List<string> StoredProcedureParameterProvider(IDbConnection connection, string storedProcedureName)
