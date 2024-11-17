@@ -6,10 +6,68 @@
 Console.WriteLine(result.Value);
 
 
-
+Select
+SPECIFIC_NAME,
+ORDINAL_POSITION,
+PARAMETER_MODE,
+IS_RESULT,
+PARAMETER_NAME,
+DATA_TYPE,
+CHARACTER_MAXIMUM_LENGTH,
+CHARACTER_OCTET_LENGTH,
+NUMERIC_PRECISION,
+NUMERIC_PRECISION_RADIX,
+NUMERIC_SCALE,
+DATETIME_PRECISION
+from INFORMATION_SCHEMA.PARAMETERS
+Where SPECIFIC_NAME ='SP_Insert_FedWireMsgRepo'
 
 https://dotnettutorials.net/lesson/first-and-firstordefault-methods-in-linq/
 
+delegate List<string> StoredProcedureParameterProvider(IDbConnection connection, string storedProcedureName)
+
+SqlMapper.StoredProcedureParameterProvider = (connection, storedProcedureName) =>
+    // full implementation would want to cache this based upon the name
+    connection.Query<string> (
+        @"SELECT PARAMETER_NAME
+            FROM INFORMATION_SCHEMA.PARAMETERS
+            WHERE SPECIFIC_SCHEMA = PARSENAME(@storedProcedureName, 2)
+            AND SPECIFIC_NAME = PARSENAME(@storedProcedureName, 1)",
+        buffered: false,
+        param: {storedProcedureName})
+        .Select(name => name.TrimStart('@')
+        .ToList ();
+		
+		https://github.com/DapperLib/Dapper/issues/393
+		
+		
+		https://www.oreilly.com/library/view/adonet-cookbook/0596004397/ch04s10.html#:~:text=DeriveParameters(%20)%20method,-The%20first%20technique&text=The%20name%20of%20the%20stored,procedure%20into%20a%20Parameters%20collection.
+		
+		
+select  
+   'Parameter_name' = name,  
+   'Type'   = type_name(user_type_id),  
+   'Length'   = max_length,  
+   'Prec'   = case when type_name(system_type_id) = 'uniqueidentifier' 
+              then precision  
+              else OdbcPrec(system_type_id, max_length, precision) end,  
+   'Scale'   = OdbcScale(system_type_id, scale),  
+   'Param_order'  = parameter_id,  
+   'Collation'   = convert(sysname, 
+                   case when system_type_id in (35, 99, 167, 175, 231, 239)  
+                   then ServerProperty('collation') end)  
+
+  from sys.parameters where object_id = object_id('sp_insert_Action_Option_Cash_Payout')
+  
+  select  *
+  
+
+  from sys.parameters where object_id = object_id('sp_insert_Action_Option_Cash_Payout')
+  
+  
+  https://www.google.com/search?q=sql+server+get+stored+procedure+parameter+list&sca_esv=04e68c913ef2a454&sxsrf=ADLYWIKTYN5ex5TRYwLPr1It9n2TnKcUqg%3A1731649685939&ei=leA2Z8D5OMCj5NoP97yB-Qs&oq=sql+server+retrieve+stored+procedure+parameters+&gs_lp=Egxnd3Mtd2l6LXNlcnAiMHNxbCBzZXJ2ZXIgcmV0cmlldmUgc3RvcmVkIHByb2NlZHVyZSBwYXJhbWV0ZXJzICoCCAIyBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIIEAAYgAQYogQyCBAAGIAEGKIEMggQABiABBiiBEjIPVAAWP4acAB4AZABAJgBowGgAfAIqgEEMTIuMbgBAcgBAPgBAZgCDaACpQnCAgQQIxgnwgIIEAAYFhgKGB7CAgsQABiABBiGAxiKBcICCBAAGKIEGIkFmAMA4gMFEgExIECSBwQxMS4yoAfShAE&sclient=gws-wiz-serp
+  
+  
 //Dapper
 https://learn.microsoft.com/en-us/ef/core/dbcontext-configuration/
 https://www.c-sharpcorner.com/article/api-development-using-dapper-and-microsoft-asp-net-core-web-api/ (good
@@ -90,50 +148,7 @@ And finally the appsettings.js
 https://blog.kritner.com/2018/09/14/dotnet-core-console-application-ioptions-t-configuration/
 
 
-delegate List<string> StoredProcedureParameterProvider(IDbConnection connection, string storedProcedureName)
 
-SqlMapper.StoredProcedureParameterProvider = (connection, storedProcedureName) =>
-    // full implementation would want to cache this based upon the name
-    connection.Query<string> (
-        @"SELECT PARAMETER_NAME
-            FROM INFORMATION_SCHEMA.PARAMETERS
-            WHERE SPECIFIC_SCHEMA = PARSENAME(@storedProcedureName, 2)
-            AND SPECIFIC_NAME = PARSENAME(@storedProcedureName, 1)",
-        buffered: false,
-        param: {storedProcedureName})
-        .Select(name => name.TrimStart('@')
-        .ToList ();
-		
-		https://github.com/DapperLib/Dapper/issues/393
-		
-		
-		https://www.oreilly.com/library/view/adonet-cookbook/0596004397/ch04s10.html#:~:text=DeriveParameters(%20)%20method,-The%20first%20technique&text=The%20name%20of%20the%20stored,procedure%20into%20a%20Parameters%20collection.
-		
-		
-select  
-   'Parameter_name' = name,  
-   'Type'   = type_name(user_type_id),  
-   'Length'   = max_length,  
-   'Prec'   = case when type_name(system_type_id) = 'uniqueidentifier' 
-              then precision  
-              else OdbcPrec(system_type_id, max_length, precision) end,  
-   'Scale'   = OdbcScale(system_type_id, scale),  
-   'Param_order'  = parameter_id,  
-   'Collation'   = convert(sysname, 
-                   case when system_type_id in (35, 99, 167, 175, 231, 239)  
-                   then ServerProperty('collation') end)  
-
-  from sys.parameters where object_id = object_id('sp_insert_Action_Option_Cash_Payout')
-  
-  select  *
-  
-
-  from sys.parameters where object_id = object_id('sp_insert_Action_Option_Cash_Payout')
-  
-  
-  https://www.google.com/search?q=sql+server+get+stored+procedure+parameter+list&sca_esv=04e68c913ef2a454&sxsrf=ADLYWIKTYN5ex5TRYwLPr1It9n2TnKcUqg%3A1731649685939&ei=leA2Z8D5OMCj5NoP97yB-Qs&oq=sql+server+retrieve+stored+procedure+parameters+&gs_lp=Egxnd3Mtd2l6LXNlcnAiMHNxbCBzZXJ2ZXIgcmV0cmlldmUgc3RvcmVkIHByb2NlZHVyZSBwYXJhbWV0ZXJzICoCCAIyBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIIEAAYgAQYogQyCBAAGIAEGKIEMggQABiABBiiBEjIPVAAWP4acAB4AZABAJgBowGgAfAIqgEEMTIuMbgBAcgBAPgBAZgCDaACpQnCAgQQIxgnwgIIEAAYFhgKGB7CAgsQABiABBiGAxiKBcICCBAAGKIEGIkFmAMA4gMFEgExIECSBwQxMS4yoAfShAE&sclient=gws-wiz-serp
-  
-  
   
   USE AdventureWorks;
 GO
