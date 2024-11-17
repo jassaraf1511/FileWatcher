@@ -163,3 +163,12 @@ INNER JOIN sys.parameters AS P ON SO.OBJECT_ID = P.OBJECT_ID
 where SO.name='sp_insert_Swift_Message'
 ORDER BY [Schema], SO.name, P.parameter_id
 GO
+
+
+
+ SELECT *
+            FROM INFORMATION_SCHEMA.PARAMETERS
+   SELECT PARAMETER_NAME
+            FROM INFORMATION_SCHEMA.PARAMETERS
+            WHERE SPECIFIC_SCHEMA = 'dbo'
+            AND SPECIFIC_NAME = PARSENAME('sp_insert_Action_Option_Cash_Payout', 1)
