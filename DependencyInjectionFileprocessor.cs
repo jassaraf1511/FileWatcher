@@ -4,6 +4,10 @@
                where farmer.Qualifier == "SEME"
                select farmer).First();
 Console.WriteLine(result.Value);
+
+
+
+
 https://dotnettutorials.net/lesson/first-and-firstordefault-methods-in-linq/
 
 //Dapper
