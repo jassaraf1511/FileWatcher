@@ -49,14 +49,14 @@ using System.Data;
 
 namespace Safra.CorporateActions.Domain.Entities
 {
-    public static class ClrTypeToSqlDbTypeMapper
+    public static class ClrTypeToDbTypeMapper
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes the <see cref="ClrTypeToSqlDbTypeMapper"/> class.
+        /// Initializes the <see cref="ClrTypeToDbTypeMapper"/> class.
         /// </summary>
-        static ClrTypeToSqlDbTypeMapper()
+        static ClrTypeToDbTypeMapper()
         {
             CreateClrTypeToSqlTypeMaps();
         }
@@ -66,18 +66,18 @@ namespace Safra.CorporateActions.Domain.Entities
         #region Public  Members
 
         /// <summary>
-        /// Gets the mapped SqlDbType for the specified CLR type.
+        /// Gets the mapped DbType for the specified CLR type.
         /// </summary>
-        /// <param name="clrType">The CLR Type to get mapped SqlDbType for.</param>
+        /// <param name="clrType">The CLR Type to get mapped DbType for.</param>
         /// <returns></returns>
-        public static SqlDbType GetSqlDbTypeFromClrType(Type clrType)
+        public static DbType GetDbTypeFromClrType(Type clrType)
         {
             if (!_clrTypeToSqlTypeMaps.ContainsKey(clrType))
             {
                 throw new ArgumentOutOfRangeException("clrType", @"No mapped type found for " + clrType);
             }
 
-            SqlDbType result;
+            DbType result;
             _clrTypeToSqlTypeMaps.TryGetValue(clrType, out result);
             return result;
         }
@@ -88,42 +88,44 @@ namespace Safra.CorporateActions.Domain.Entities
 
         private static void CreateClrTypeToSqlTypeMaps()
         {
-            _clrTypeToSqlTypeMaps = new Dictionary<Type, SqlDbType>
+            _clrTypeToSqlTypeMaps = new Dictionary<Type, DbType>
             {
-                {typeof (Boolean), SqlDbType.Bit},
-                {typeof (Boolean?), SqlDbType.Bit},
-                {typeof (Byte), SqlDbType.TinyInt},
-                {typeof (Byte?), SqlDbType.TinyInt},
-                {typeof (String), SqlDbType.NVarChar},
-                {typeof (DateTime), SqlDbType.DateTime},
-                {typeof (DateTime?), SqlDbType.DateTime},
-                {typeof (Int16), SqlDbType.SmallInt},
-                {typeof (Int16?), SqlDbType.SmallInt},
-                {typeof (Int32), SqlDbType.Int},
-                {typeof (Int32?), SqlDbType.Int},
-                {typeof (Int64), SqlDbType.BigInt},
-                {typeof (Int64?), SqlDbType.BigInt},
-                {typeof (Decimal), SqlDbType.Decimal},
-                {typeof (Decimal?), SqlDbType.Decimal},
-                {typeof (Double), SqlDbType.Float},
-                {typeof (Double?), SqlDbType.Float},
-                {typeof (Single), SqlDbType.Real},
-                {typeof (Single?), SqlDbType.Real},
-                {typeof (TimeSpan), SqlDbType.Time},
-                {typeof (Guid), SqlDbType.UniqueIdentifier},
-                {typeof (Guid?), SqlDbType.UniqueIdentifier},
-                {typeof (Byte[]), SqlDbType.Binary},
-                {typeof (Byte?[]), SqlDbType.Binary},
-                {typeof (Char[]), SqlDbType.Char},
-                {typeof (Char?[]), SqlDbType.Char}
+                {typeof (Boolean), DbType.Boolean},
+                {typeof (Boolean?), DbType.Boolean},
+                {typeof (Byte), DbType.Byte},
+                {typeof (Byte?), DbType.Byte},
+                {typeof (String), DbType.String},
+                {typeof (DateTime), DbType.DateTime},
+                {typeof (DateTime?), DbType.DateTime},
+                {typeof (Int16), DbType.Int16},
+                {typeof (Int16?), DbType.Int16},
+                {typeof (Int32), DbType.Int32},
+                {typeof (Int32?), DbType.Int32},
+                {typeof (Int64), DbType.Int64},
+                {typeof (Int64?), DbType.Int64},
+                {typeof (Decimal), DbType.Decimal},
+                {typeof (Decimal?), DbType.Decimal},
+                {typeof (Double), DbType.Double},
+                {typeof (Double?), DbType.Double},
+                {typeof (Single), DbType.Decimal},
+                {typeof (Single?), DbType.Decimal},
+                {typeof (TimeSpan), DbType.Time},
+                {typeof (Guid), DbType.Guid},
+                {typeof (Guid?), DbType.Guid},
+                {typeof (Byte[]), DbType.Binary},
+                {typeof (Byte?[]), DbType.Binary},
+                {typeof (Char[]), DbType.String},
+                {typeof (Char?[]), DbType.String}
             };
         }
 
-        private static Dictionary<Type, SqlDbType> _clrTypeToSqlTypeMaps; // = new 
+        private static Dictionary<Type, DbType> _clrTypeToSqlTypeMaps; // = new 
 
         #endregion
     }
 }
+
+
 
  string test="";
  Type value = test.GetType();
