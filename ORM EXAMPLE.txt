@@ -1,3 +1,24 @@
+int i = findItemIndex(TagIdEnum.ReferenceTag, TagQualifiertEnum.SEME);
+Console.WriteLine(i);
+int startIndex = findItemIndexByTagNameAndQualifier("16R", "SECMOVE");
+int endIndex = findItemIndexByTagNameAndQualifier("16S", "SECMOVE");
+var result = this.parsedMessage.Bloack4ListOfBusinessRules.Skip(startIndex + 1).Take(endIndex - 1 - startIndex);
+
+if (parsedMessage.Bloack4ListOfBusinessRules.ElementAt(0).BusinessRuleType == typeof(FlagRule))
+{
+    Console.WriteLine("OK");
+    FlagRule R = (FlagRule)parsedMessage.Bloack4ListOfBusinessRules.ElementAt(0);
+    Console.WriteLine(R.Flag);
+}
+foreach (IBusinessRule tag in result)
+{
+    
+    Console.WriteLine(tag.TagName);
+    Console.WriteLine(tag.SwiftText);
+}
+            
+
+
 https://www.dpriver.com/pp/sqlformat.htmprivate int findItemIndex(TagIdEnum tagId, TagQualifiertEnum qualifierId)
 https://stackoverflow.com/questions/9808035/how-do-i-make-the-return-type-of-a-method-generic
 https://www.google.com/search?q=csharp+how+to+call+a+method+and+returning+a+T+generique&rlz=1C1CHBD_enUS897US897&oq=csharp+how+to+call+a+method+and+returning+a+T+generique+&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORigATIHCAEQIRirAjIHCAIQIRirAjIHCAMQIRirAjIHCAQQIRiPAjIHCAUQIRiPAtIBCTIwMzU3ajBqN6gCCLACAQ&sourceid=chrome&ie=UTF-8
