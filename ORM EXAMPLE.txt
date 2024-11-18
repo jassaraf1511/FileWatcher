@@ -125,7 +125,10 @@ namespace Safra.CorporateActions.Domain.Entities
     }
 }
 
-
+ string test="";
+ Type value = test.GetType();
+ SqlDbType actual = ClrTypeToSqlDbTypeMapper.GetSqlDbTypeFromClrType(value);
+ int i = findItemIndex(TagIdEnum.ReferenceTag, TagQualifiertEnum.SEME);
 int i = findItemIndex(TagIdEnum.ReferenceTag, TagQualifiertEnum.SEME);
 Console.WriteLine(i);
 int startIndex = findItemIndexByTagNameAndQualifier("16R", "SECMOVE");
