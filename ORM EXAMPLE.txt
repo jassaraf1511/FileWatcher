@@ -20,6 +20,111 @@ https://stackoverflow.com/questions/1574867/convert-datacolumn-datatype-to-sqldb
      }
      return p1.SqlDbType;
 }
+Private Function GetDBType(ByVal theType As System.Type) As SqlDbType
+    Dim p1 As SqlClient.SqlParameter
+    Dim tc As System.ComponentModel.TypeConverter
+    p1 = New SqlClient.SqlParameter()
+    tc = System.ComponentModel.TypeDescriptor.GetConverter(p1.DbType)
+    If tc.CanConvertFrom(theType) Then
+        p1.DbType = tc.ConvertFrom(theType.Name)
+    Else
+        'Try brute force
+        Try
+            p1.DbType = tc.ConvertFrom(theType.Name)
+        Catch ex As Exception
+            'Do Nothing
+        End Try
+    End If
+    Return p1.SqlDbType
+End Function
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+
+namespace Safra.CorporateActions.Domain.Entities
+{
+    public static class ClrTypeToSqlDbTypeMapper
+    {
+        #region Constructors
+
+        /// <summary>
+        /// Initializes the <see cref="ClrTypeToSqlDbTypeMapper"/> class.
+        /// </summary>
+        static ClrTypeToSqlDbTypeMapper()
+        {
+            CreateClrTypeToSqlTypeMaps();
+        }
+
+        #endregion
+
+        #region Public  Members
+
+        /// <summary>
+        /// Gets the mapped SqlDbType for the specified CLR type.
+        /// </summary>
+        /// <param name="clrType">The CLR Type to get mapped SqlDbType for.</param>
+        /// <returns></returns>
+        public static SqlDbType GetSqlDbTypeFromClrType(Type clrType)
+        {
+            if (!_clrTypeToSqlTypeMaps.ContainsKey(clrType))
+            {
+                throw new ArgumentOutOfRangeException("clrType", @"No mapped type found for " + clrType);
+            }
+
+            SqlDbType result;
+            _clrTypeToSqlTypeMaps.TryGetValue(clrType, out result);
+            return result;
+        }
+
+        #endregion
+
+        #region Private Members
+
+        private static void CreateClrTypeToSqlTypeMaps()
+        {
+            _clrTypeToSqlTypeMaps = new Dictionary<Type, SqlDbType>
+            {
+                {typeof (Boolean), SqlDbType.Bit},
+                {typeof (Boolean?), SqlDbType.Bit},
+                {typeof (Byte), SqlDbType.TinyInt},
+                {typeof (Byte?), SqlDbType.TinyInt},
+                {typeof (String), SqlDbType.NVarChar},
+                {typeof (DateTime), SqlDbType.DateTime},
+                {typeof (DateTime?), SqlDbType.DateTime},
+                {typeof (Int16), SqlDbType.SmallInt},
+                {typeof (Int16?), SqlDbType.SmallInt},
+                {typeof (Int32), SqlDbType.Int},
+                {typeof (Int32?), SqlDbType.Int},
+                {typeof (Int64), SqlDbType.BigInt},
+                {typeof (Int64?), SqlDbType.BigInt},
+                {typeof (Decimal), SqlDbType.Decimal},
+                {typeof (Decimal?), SqlDbType.Decimal},
+                {typeof (Double), SqlDbType.Float},
+                {typeof (Double?), SqlDbType.Float},
+                {typeof (Single), SqlDbType.Real},
+                {typeof (Single?), SqlDbType.Real},
+                {typeof (TimeSpan), SqlDbType.Time},
+                {typeof (Guid), SqlDbType.UniqueIdentifier},
+                {typeof (Guid?), SqlDbType.UniqueIdentifier},
+                {typeof (Byte[]), SqlDbType.Binary},
+                {typeof (Byte?[]), SqlDbType.Binary},
+                {typeof (Char[]), SqlDbType.Char},
+                {typeof (Char?[]), SqlDbType.Char}
+            };
+        }
+
+        private static Dictionary<Type, SqlDbType> _clrTypeToSqlTypeMaps; // = new 
+
+        #endregion
+    }
+}
+
 
 int i = findItemIndex(TagIdEnum.ReferenceTag, TagQualifiertEnum.SEME);
 Console.WriteLine(i);
