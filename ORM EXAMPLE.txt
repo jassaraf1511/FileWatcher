@@ -1,4 +1,4 @@
-
+https://www.codeproject.com/Articles/1064221/Clr-Type-To-SqlDbType-Mapper-for-Csharp
 http://dotnetpulse.blogspot.com/2006/04/convert-net-type-to-sqldbtype-or.html
 private SqlDbType GetDBType(System.Type theType)
 https://stackoverflow.com/questions/1574867/convert-datacolumn-datatype-to-sqldbtype
