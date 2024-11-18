@@ -3,13 +3,28 @@ https://stackoverflow.com/questions/9808035/how-do-i-make-the-return-type-of-a-m
 https://www.google.com/search?q=csharp+how+to+call+a+method+and+returning+a+T+generique&rlz=1C1CHBD_enUS897US897&oq=csharp+how+to+call+a+method+and+returning+a+T+generique+&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORigATIHCAEQIRirAjIHCAIQIRirAjIHCAMQIRirAjIHCAQQIRiPAjIHCAUQIRiPAtIBCTIwMzU3ajBqN6gCCLACAQ&sourceid=chrome&ie=UTF-8
 
 https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
+
+            int i = findItemIndex(TagIdEnum.ReferenceTag, TagQualifiertEnum.SEME);
+            Console.WriteLine(i);
+            int startIndex = findItemIndexByTagNameAndQualifier("16R", "GENL");
+            int endIndex = findItemIndexByTagNameAndQualifier("16S", "GENL");
+            var result = this.parsedMessage.Block4.Skip(startIndex + 1).Take(endIndex - 1 - startIndex);
+
+            foreach (ITag tag in result)
+            {
+                Console.WriteLine(tag.TagName);
+                Console.WriteLine(tag.SwiftText);
+            }
+
+private int findItemIndex (TagIdEnum tagId, TagQualifiertEnum qualifierId)
 {
+  
     if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
     if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
     try
     {
-        string searchTag = Enum.GetName(typeof(TagIdEnum), tagId);
-        string searchQual = Enum.GetName(typeof(TagQualifiertEnum), qualifierId);
+        string searchTag = EnumHelperHelpers.GetEnumDescription(tagId); ;// Enum.GetName(typeof(TagIdEnum), tagId);
+        string searchQual = EnumHelperHelpers.GetEnumDescription(qualifierId); ;//  Enum.GetName(typeof(TagQualifiertEnum), qualifierId);
         IEnumerable<int> indexes = (from item1 in this.parsedMessage.Block4
                                     where item1.TagId == (int)tagId
                                     where item1.Qualifier == searchQual
@@ -21,8 +36,6 @@ https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-var
     {
         return 0;
     }
-
-
 private int findItemIndex<T> (T item, TagIdEnum tagId, TagQualifiertEnum qualifierId)
 {
     if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
