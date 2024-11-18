@@ -1,4 +1,4 @@
-private int findItemIndex(TagIdEnum tagId, TagQualifiertEnum qualifierId)
+https://www.dpriver.com/pp/sqlformat.htmprivate int findItemIndex(TagIdEnum tagId, TagQualifiertEnum qualifierId)
 {
     if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
     if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
