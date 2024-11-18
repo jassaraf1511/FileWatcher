@@ -1,4 +1,8 @@
 https://www.dpriver.com/pp/sqlformat.htmprivate int findItemIndex(TagIdEnum tagId, TagQualifiertEnum qualifierId)
+https://stackoverflow.com/questions/9808035/how-do-i-make-the-return-type-of-a-method-generic
+https://www.google.com/search?q=csharp+how+to+call+a+method+and+returning+a+T+generique&rlz=1C1CHBD_enUS897US897&oq=csharp+how+to+call+a+method+and+returning+a+T+generique+&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORigATIHCAEQIRirAjIHCAIQIRirAjIHCAMQIRirAjIHCAQQIRiPAjIHCAUQIRiPAtIBCTIwMzU3ajBqN6gCCLACAQ&sourceid=chrome&ie=UTF-8
+
+https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
 {
     if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
     if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
