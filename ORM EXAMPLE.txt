@@ -1,113 +1,16 @@
 
-USE [CorporateActions]
-GO
-/****** Object:  StoredProcedure [dbo].[sp_insert_Swift_Message]    Script Date: 11/20/2024 9:42:29 AM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-ALTER PROCEDURE [dbo].[sp_insert_Swift_Message]
-(
-	@Message_ID as varchar(32),
-	@MessageType as varchar(3) = Null,
-	@SenderBIC as varchar(9) = Null,
-	@Depositary_ID as varchar(12) = Null,
-	@CorporateActionReference as varchar(16) = Null,
-	@Messagefunction as varchar(4) = Null,
-	@ProcStatusCode as varchar(4) = Null,
-	@Mandatoryvoluntaryindicator as varchar(4) = Null,
-	@Eventtype as varchar(4) = Null,
-	@SwiftMessage as varchar(max) = Null,
-	@SwiftMessageFileName as varchar(64) = Null,
-	@Status as varchar(10) = Null,
-	@ErrorType as varchar(16) = Null,
-	@ErrorReason as varchar(256) = Null,
-	@ReceiptDate as datetime = Null,
-	@CreationDate as datetime = Null,
-	@UpdatedDate datetime = Null,
-	@CancelationDate datetime = Null,
-	@CreatedBy as varchar(35) = Null,
-	@UpdatedBy as varchar(35) = Null,
-	@CanceledBy as varchar(35) = Null
-
-)
-AS
-
-begin transaction
-
-	begin try
-
-		-- insert
-			insert [dbo].[Swift_Message] (
-				Message_ID,
-				MessageType,
-				SenderBIC,
-				Depositary_ID,
-				CorporateActionReference,
-				Messagefunction,
-				ProcStatusCode,
-				Mandatoryvoluntaryindicator,
-				Eventtype,
-				SwiftMessage,
-				SwiftMessageFileName,
-				Status,
-				ErrorType,
-				ErrorReason,
-				ReceiptDate,
-				CreationDate,
-				UpdatedDate,
-				CancelationDate,
-				CreatedBy,
-				UpdatedBy,
-				CanceledBy)
-			values (
-				@Message_ID,
-				@MessageType,
-				@SenderBIC,
-				@Depositary_ID,
-				@CorporateActionReference,
-				@Messagefunction,
-				@ProcStatusCode,
-				@Mandatoryvoluntaryindicator,
-				@Eventtype,
-				@SwiftMessage,
-				@SwiftMessageFileName,
-				@Status,
-				@ErrorType,
-				@ErrorReason,
-				@ReceiptDate ,
-				@CreationDate,
-				@UpdatedDate ,
-				@CancelationDate ,
-				@CreatedBy,
-				@UpdatedBy,
-				@CanceledBy)
-
-
-		-- Return the new ID
-		select SCOPE_IDENTITY() ;
-
-		commit transaction
-
-	end try 
-
-	begin catch
-
-		declare @ErrorMessage NVARCHAR(4000);
-		declare @ErrorSeverity INT;
-		declare @ErrorState INT;
-
-		select @ErrorMessage = ERROR_MESSAGE(), @ErrorSeverity = ERROR_SEVERITY(), @ErrorState = ERROR_STATE();
-
-		raiserror (@ErrorMessage, @ErrorSeverity, @ErrorState);
-
-		rollback transaction
-
-	end catch;
-
-
+ if (parsedMessage.Bloack4ListOfBusinessRules.ElementAt(0).BusinessRuleType == typeof(FlagRule))
+ {
+     Console.WriteLine("OK");
+     FlagRule R = (FlagRule)parsedMessage.Bloack4ListOfBusinessRules.ElementAt(0);
+     Console.WriteLine(R.Flag);
+ }
+ foreach (IBusinessRule tag in result)
+ {
+     
+     Console.WriteLine(tag.TagName);
+     Console.WriteLine(tag.SwiftText);
+ }
 
 
 
@@ -141,105 +44,6 @@ https://www.c-sharpcorner.com/UploadFile/4d9083/mapping-stored-procedures-and-ge
      throw;
  }
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Safra.CorporateActions.Domain.Entities
-{
-    public class Parameters
-    {
-        public string? ParameterName { get; set; }
-        public string? ParameterType { get; set; }
-        public string? ParameterLength { get; set; }
-        public string? ParameterPrec { get; set; }
-        public string? ParameterScale { get; set; }
-        public string? ParameterPosition { get; set; }
-        public string? ParameterIsResult { get; set; }
-        public string? ParameterCollation { get; set; }
-    }
-}
-
-  public async Task<bool> CreateAnnouncementSwiftMessage(AnnouncementSwiftMessage caSwiftMessage)
-  {
-      IDbConnection? connection = null;
-      SqlMapper.AddTypeHandler(new SqlDateOnlyTypeHandler());
-      SqlMapper.AddTypeHandler(new SqlTimeOnlyTypeHandler());
-      try
-      {
-          var sql = "CorporateActions.dbo.sp_insert_Swift_Message " +
-              "@Message_ID, " +
-              "@MessageType, " +
-              "@SenderBIC, " +
-              "@Depositary_ID, " +
-              "@CorporateActionReference, " +
-              "@Messagefunction, " +
-              "@ProcStatusCode, " +
-              "@Mandatoryvoluntaryindicator, " +
-              "@Eventtype, " +
-              "@SwiftMessage, " +
-              "@SwiftMessageFileName, " +
-              "@Status, " +
-              "@ErrorType, " +
-              "@ErrorReason, " +
-              "@ReceiptDate, " +
-              "@CreationDate, " +
-              "@UpdatedDate, " +
-              "@CancelationDate, " +
-              "@CreatedBy, "+
-              "@UpdatedBy, " +
-              "@CanceledBy";
-
-          using (connection = _dbContext.CreateConnection())
-          {
-              connection.Open();
-              var parameters = new DynamicParameters();
-
-              parameters.Add("Message_ID", caSwiftMessage.Message_ID, DbType.String);                    
-              parameters.Add("MessageType", caSwiftMessage.MessageType, DbType.String);
-              parameters.Add("SenderBIC", caSwiftMessage.SenderBIC, DbType.String);
-              parameters.Add("Depositary_ID", caSwiftMessage.Depositary_ID, DbType.String);
-              parameters.Add("CorporateActionReference", caSwiftMessage.CorporateActionReference, DbType.String);
-              parameters.Add("Messagefunction", caSwiftMessage.Messagefunction, DbType.String);
-              parameters.Add("ProcStatusCode", caSwiftMessage.ProcStatusCode, DbType.String);
-              parameters.Add("Mandatoryvoluntaryindicator", caSwiftMessage.Mandatoryvoluntaryindicator, DbType.String);
-              parameters.Add("Eventtype", caSwiftMessage.Eventtype, DbType.String);
-              parameters.Add("SwiftMessage", caSwiftMessage.SwiftMessage, DbType.String);
-              parameters.Add("SwiftMessageFileName", caSwiftMessage.SwiftMessageFileName, DbType.String);
-
-              parameters.Add("Status", caSwiftMessage.Status, DbType.String);
-              parameters.Add("ErrorType", caSwiftMessage.ErrorType, DbType.String);
-              parameters.Add("ErrorReason", caSwiftMessage.ErrorReason, DbType.String);
-
-              parameters.Add("ReceiptDate", caSwiftMessage.ReceiptDate, DbType.DateTime); 
-              parameters.Add("CreationDate", caSwiftMessage.CreationDate,DbType.DateTime);
-              parameters.Add("UpdatedDate", caSwiftMessage.UpdatedDate, DbType.DateTime);
-              parameters.Add("CancelationDate", caSwiftMessage.CancelationDate, DbType.DateTime);
-
-              parameters.Add("CreatedBy", caSwiftMessage.CreatedBy);
-              parameters.Add("UpdatedBy", caSwiftMessage.UpdatedBy);
-              parameters.Add("CanceledBy", caSwiftMessage.CanceledBy);
-            var result=  await connection.ExecuteAsync(sql, parameters);
-              string test = result.ToString();
-              connection.Close();
-
-          }
-          return true;  //((object)caSwiftMessage.ReceiptDate) ?? DBNull.Value))
-      }
-      catch (Exception ex)
-      {
-          _logger.LogError(ex, "{Message}", ex.Message);
-          throw;
-      }
-      finally
-      {
-          if (connection != null)
-              if (connection.State == ConnectionState.Open)
-                  connection.Close();
-      }
-  }
 
 https://www.codeproject.com/Articles/1064221/Clr-Type-To-SqlDbType-Mapper-for-Csharp
 http://dotnetpulse.blogspot.com/2006/04/convert-net-type-to-sqldbtype-or.html
