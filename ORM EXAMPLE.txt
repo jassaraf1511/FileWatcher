@@ -1,3 +1,83 @@
+
+  public async Task<bool> CreateAnnouncementSwiftMessage(AnnouncementSwiftMessage caSwiftMessage)
+  {
+      IDbConnection? connection = null;
+      SqlMapper.AddTypeHandler(new SqlDateOnlyTypeHandler());
+      SqlMapper.AddTypeHandler(new SqlTimeOnlyTypeHandler());
+      try
+      {
+          var sql = "CorporateActions.dbo.sp_insert_Swift_Message " +
+              "@Message_ID, " +
+              "@MessageType, " +
+              "@SenderBIC, " +
+              "@Depositary_ID, " +
+              "@CorporateActionReference, " +
+              "@Messagefunction, " +
+              "@ProcStatusCode, " +
+              "@Mandatoryvoluntaryindicator, " +
+              "@Eventtype, " +
+              "@SwiftMessage, " +
+              "@SwiftMessageFileName, " +
+              "@Status, " +
+              "@ErrorType, " +
+              "@ErrorReason, " +
+              "@ReceiptDate, " +
+              "@CreationDate, " +
+              "@UpdatedDate, " +
+              "@CancelationDate, " +
+              "@CreatedBy, "+
+              "@UpdatedBy, " +
+              "@CanceledBy";
+
+          using (connection = _dbContext.CreateConnection())
+          {
+              connection.Open();
+              var parameters = new DynamicParameters();
+
+              parameters.Add("Message_ID", caSwiftMessage.Message_ID, DbType.String);                    
+              parameters.Add("MessageType", caSwiftMessage.MessageType, DbType.String);
+              parameters.Add("SenderBIC", caSwiftMessage.SenderBIC, DbType.String);
+              parameters.Add("Depositary_ID", caSwiftMessage.Depositary_ID, DbType.String);
+              parameters.Add("CorporateActionReference", caSwiftMessage.CorporateActionReference, DbType.String);
+              parameters.Add("Messagefunction", caSwiftMessage.Messagefunction, DbType.String);
+              parameters.Add("ProcStatusCode", caSwiftMessage.ProcStatusCode, DbType.String);
+              parameters.Add("Mandatoryvoluntaryindicator", caSwiftMessage.Mandatoryvoluntaryindicator, DbType.String);
+              parameters.Add("Eventtype", caSwiftMessage.Eventtype, DbType.String);
+              parameters.Add("SwiftMessage", caSwiftMessage.SwiftMessage, DbType.String);
+              parameters.Add("SwiftMessageFileName", caSwiftMessage.SwiftMessageFileName, DbType.String);
+
+              parameters.Add("Status", caSwiftMessage.Status, DbType.String);
+              parameters.Add("ErrorType", caSwiftMessage.ErrorType, DbType.String);
+              parameters.Add("ErrorReason", caSwiftMessage.ErrorReason, DbType.String);
+
+              parameters.Add("ReceiptDate", caSwiftMessage.ReceiptDate, DbType.DateTime); 
+              parameters.Add("CreationDate", caSwiftMessage.CreationDate,DbType.DateTime);
+              parameters.Add("UpdatedDate", caSwiftMessage.UpdatedDate, DbType.DateTime);
+              parameters.Add("CancelationDate", caSwiftMessage.CancelationDate, DbType.DateTime);
+
+              parameters.Add("CreatedBy", caSwiftMessage.CreatedBy);
+              parameters.Add("UpdatedBy", caSwiftMessage.UpdatedBy);
+              parameters.Add("CanceledBy", caSwiftMessage.CanceledBy);
+            var result=  await connection.ExecuteAsync(sql, parameters);
+              string test = result.ToString();
+              connection.Close();
+
+          }
+          return true;  //((object)caSwiftMessage.ReceiptDate) ?? DBNull.Value))
+      }
+      catch (Exception ex)
+      {
+          _logger.LogError(ex, "{Message}", ex.Message);
+          throw;
+      }
+      finally
+      {
+          if (connection != null)
+              if (connection.State == ConnectionState.Open)
+                  connection.Close();
+      }
+  }
+
 https://www.codeproject.com/Articles/1064221/Clr-Type-To-SqlDbType-Mapper-for-Csharp
 http://dotnetpulse.blogspot.com/2006/04/convert-net-type-to-sqldbtype-or.html
 private SqlDbType GetDBType(System.Type theType)
