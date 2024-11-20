@@ -1,3 +1,52 @@
+https://www.c-sharpcorner.com/UploadFile/4d9083/mapping-stored-procedures-and-getting-multiple-records-from/
+ try
+ {
+     var sql = "CorporateActions.dbo.sp_get_storeprocedure_parameters";
+     using (connection = _dbContext.CreateConnection())
+     {
+         var para = new DynamicParameters();
+
+         para.Add("@sp_name", "sp_insert_Swift_Message");
+         connection.Open();
+         var multi = connection.QueryMultiple(sql, para);
+         var result =  multi.Read<Parameters>().ToList();
+         if (result != null) { int i = 0; }
+
+         foreach (Parameters parm in result)
+         {
+             Console.WriteLine(parm.ToString());
+         }
+         connection.Close();
+
+     }
+ }
+  
+ catch (Exception ex)
+ {
+     _logger.LogError(ex, "{Message}", ex.Message);
+     throw;
+ }
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Safra.CorporateActions.Domain.Entities
+{
+    public class Parameters
+    {
+        public string? ParameterName { get; set; }
+        public string? ParameterType { get; set; }
+        public string? ParameterLength { get; set; }
+        public string? ParameterPrec { get; set; }
+        public string? ParameterScale { get; set; }
+        public string? ParameterPosition { get; set; }
+        public string? ParameterIsResult { get; set; }
+        public string? ParameterCollation { get; set; }
+    }
+}
 
   public async Task<bool> CreateAnnouncementSwiftMessage(AnnouncementSwiftMessage caSwiftMessage)
   {
