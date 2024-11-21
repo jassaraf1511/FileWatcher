@@ -1,3 +1,4 @@
+https://www.c-sharpcorner.com/UploadFile/4d9083/mapping-stored-procedures-and-getting-multiple-records-from/
 
  if (parsedMessage.Bloack4ListOfBusinessRules.ElementAt(0).BusinessRuleType == typeof(FlagRule))
  {
@@ -11,9 +12,6 @@
      Console.WriteLine(tag.TagName);
      Console.WriteLine(tag.SwiftText);
  }
-
-
-
 
 https://www.c-sharpcorner.com/UploadFile/4d9083/mapping-stored-procedures-and-getting-multiple-records-from/
  try
@@ -45,10 +43,6 @@ https://www.c-sharpcorner.com/UploadFile/4d9083/mapping-stored-procedures-and-ge
  }
 
 
-https://www.codeproject.com/Articles/1064221/Clr-Type-To-SqlDbType-Mapper-for-Csharp
-http://dotnetpulse.blogspot.com/2006/04/convert-net-type-to-sqldbtype-or.html
-private SqlDbType GetDBType(System.Type theType)
-https://stackoverflow.com/questions/1574867/convert-datacolumn-datatype-to-sqldbtype
 private SqlDbType GetDBType(System.Type theType)
 {
     System.ComponentModel.TypeConverter tc;
@@ -74,112 +68,6 @@ private SqlDbType GetDBType(System.Type theType)
     Console.WriteLine(test.ToString());
     return p1.SqlDbType;
 }
-Private Function GetDBType(ByVal theType As System.Type) As SqlDbType
-    Dim p1 As SqlClient.SqlParameter
-    Dim tc As System.ComponentModel.TypeConverter
-    p1 = New SqlClient.SqlParameter()
-    tc = System.ComponentModel.TypeDescriptor.GetConverter(p1.DbType)
-    If tc.CanConvertFrom(theType) Then
-        p1.DbType = tc.ConvertFrom(theType.Name)
-    Else
-        'Try brute force
-        Try
-            p1.DbType = tc.ConvertFrom(theType.Name)
-        Catch ex As Exception
-            'Do Nothing
-        End Try
-    End If
-    Return p1.SqlDbType
-End Function
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-namespace Safra.CorporateActions.Domain.Entities
-{
-    public static class ClrTypeToDbTypeMapper
-    {
-        #region Constructors
-
-        /// <summary>
-        /// Initializes the <see cref="ClrTypeToDbTypeMapper"/> class.
-        /// </summary>
-        static ClrTypeToDbTypeMapper()
-        {
-            CreateClrTypeToSqlTypeMaps();
-        }
-
-        #endregion
-
-        #region Public  Members
-
-        /// <summary>
-        /// Gets the mapped DbType for the specified CLR type.
-        /// </summary>
-        /// <param name="clrType">The CLR Type to get mapped DbType for.</param>
-        /// <returns></returns>
-        public static DbType GetDbTypeFromClrType(Type clrType)
-        {
-            if (!_clrTypeToSqlTypeMaps.ContainsKey(clrType))
-            {
-                throw new ArgumentOutOfRangeException("clrType", @"No mapped type found for " + clrType);
-            }
-
-            DbType result;
-            _clrTypeToSqlTypeMaps.TryGetValue(clrType, out result);
-            return result;
-        }
-
-        #endregion
-
-        #region Private Members
-
-        private static void CreateClrTypeToSqlTypeMaps()
-        {
-            _clrTypeToSqlTypeMaps = new Dictionary<Type, DbType>
-            {
-                {typeof (Boolean), DbType.Boolean},
-                {typeof (Boolean?), DbType.Boolean},
-                {typeof (Byte), DbType.Byte},
-                {typeof (Byte?), DbType.Byte},
-                {typeof (String), DbType.String},
-                {typeof (DateTime), DbType.DateTime},
-                {typeof (DateTime?), DbType.DateTime},
-                {typeof (Int16), DbType.Int16},
-                {typeof (Int16?), DbType.Int16},
-                {typeof (Int32), DbType.Int32},
-                {typeof (Int32?), DbType.Int32},
-                {typeof (Int64), DbType.Int64},
-                {typeof (Int64?), DbType.Int64},
-                {typeof (Decimal), DbType.Decimal},
-                {typeof (Decimal?), DbType.Decimal},
-                {typeof (Double), DbType.Double},
-                {typeof (Double?), DbType.Double},
-                {typeof (Single), DbType.Decimal},
-                {typeof (Single?), DbType.Decimal},
-                {typeof (TimeSpan), DbType.Time},
-                {typeof (Guid), DbType.Guid},
-                {typeof (Guid?), DbType.Guid},
-                {typeof (Byte[]), DbType.Binary},
-                {typeof (Byte?[]), DbType.Binary},
-                {typeof (Char[]), DbType.String},
-                {typeof (Char?[]), DbType.String}
-            };
-        }
-
-        private static Dictionary<Type, DbType> _clrTypeToSqlTypeMaps; // = new 
-
-        #endregion
-    }
-}
-
-
 
  string test="";
  Type value = test.GetType();
@@ -203,105 +91,8 @@ foreach (IBusinessRule tag in result)
     Console.WriteLine(tag.TagName);
     Console.WriteLine(tag.SwiftText);
 }
-            
 
-
-https://www.dpriver.com/pp/sqlformat.htmprivate int findItemIndex(TagIdEnum tagId, TagQualifiertEnum qualifierId)
-https://stackoverflow.com/questions/9808035/how-do-i-make-the-return-type-of-a-method-generic
-https://www.google.com/search?q=csharp+how+to+call+a+method+and+returning+a+T+generique&rlz=1C1CHBD_enUS897US897&oq=csharp+how+to+call+a+method+and+returning+a+T+generique+&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORigATIHCAEQIRirAjIHCAIQIRirAjIHCAMQIRirAjIHCAQQIRiPAjIHCAUQIRiPAtIBCTIwMzU3ajBqN6gCCLACAQ&sourceid=chrome&ie=UTF-8
-
-https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
-
-            int i = findItemIndex(TagIdEnum.ReferenceTag, TagQualifiertEnum.SEME);
-            Console.WriteLine(i);
-            int startIndex = findItemIndexByTagNameAndQualifier("16R", "GENL");
-            int endIndex = findItemIndexByTagNameAndQualifier("16S", "GENL");
-            var result = this.parsedMessage.Block4.Skip(startIndex + 1).Take(endIndex - 1 - startIndex);
-
-            foreach (ITag tag in result)
-            {
-                Console.WriteLine(tag.TagName);
-                Console.WriteLine(tag.SwiftText);
-            }
-
-private int findItemIndex (TagIdEnum tagId, TagQualifiertEnum qualifierId)
-{
-  
-    if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
-    if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
-    try
-    {
-        string searchTag = EnumHelperHelpers.GetEnumDescription(tagId); ;// Enum.GetName(typeof(TagIdEnum), tagId);
-        string searchQual = EnumHelperHelpers.GetEnumDescription(qualifierId); ;//  Enum.GetName(typeof(TagQualifiertEnum), qualifierId);
-        IEnumerable<int> indexes = (from item1 in this.parsedMessage.Block4
-                                    where item1.TagId == (int)tagId
-                                    where item1.Qualifier == searchQual
-                                    select this.parsedMessage.Block4.IndexOf(item1));
-        Console.WriteLine(indexes.FirstOrDefault());
-        return indexes.FirstOrDefault();
-    }
-    catch (Exception e)
-    {
-        return 0;
-    }
-private int findItemIndex<T> (T item, TagIdEnum tagId, TagQualifiertEnum qualifierId)
-{
-    if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
-    if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
-    try
-    {
-        string searchTag = Enum.GetName(typeof(TagIdEnum), tagId);
-        string searchQual = Enum.GetName(typeof(TagQualifiertEnum), qualifierId);
-        IEnumerable<int> indexes = (from item1 in this.parsedMessage.Block4
-                                    where item1.TagId == (int)tagId
-                                    where item1.Qualifier == searchQual
-                                    select this.parsedMessage.Block4.IndexOf(item1));
-        Console.WriteLine(indexes.FirstOrDefault());
-        return indexes.FirstOrDefault();
-    }
-    catch (Exception e)
-    {
-        return 0;
-    }
-
-}
-
-
-
- public static class UtilsExtensions
- {
-
-     public static int  findItemIndex<T>(T itemlist, TagIdEnum tagId, TagQualifiertEnum qualifierId) where T : IEnumerable<T>, IConvertible, IEquatable<T>
-     {
-
-         if (!Enum.IsDefined(typeof(TagIdEnum), tagId)) return 0;
-         if (!Enum.IsDefined(typeof(TagQualifiertEnum), qualifierId)) return 0;
-         try
-         {
-             string searchTag = EnumHelperHelpers.GetEnumDescription(tagId); ;// Enum.GetName(typeof(TagIdEnum), tagId);
-             string searchQual = EnumHelperHelpers.GetEnumDescription(qualifierId); ;//  Enum.GetName(typeof(TagQualifiertEnum), qualifierId);
-             IEnumerable<int> indexes = (from item1 in this.parsedMessage.Block4
-                                         where item1.TagId == (int)tagId
-                                         where item1.Qualifier == searchQual
-                                         select this.parsedMessage.Block4.IndexOf(item1));
-             Console.WriteLine(indexes.FirstOrDefault());
-             return indexes.FirstOrDefault();
-         }
-         catch (Exception e)
-         {
-             return 0;
-         }
-
-     }
-https://stackoverflow.com/questions/21877454/linq-get-all-items-between-2-matching-elements
-var startIndex = list.IndexOf(begin);
- var endIndex = list.IndexOf(end);
- var result = list.Skip(startIndex + 1).Take(endIndex - 1 - startIndex);
-
-
-https://stackoverflow.com/questions/3957817/calling-generic-method-with-type-variable
-
-
+// STore procedure
 USE [FundWireInterfaceDB] 
 GO 
 
