@@ -1,3 +1,10 @@
+
+CaEventManagerRepository
+CaEventOptionService
+
+CaSecPayoutService 
+UtilsExtensions
+
 /// <summary>
 /// Mapping configuration for a specific sql table to a specific class.
 /// </summary>
