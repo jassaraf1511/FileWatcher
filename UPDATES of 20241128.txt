@@ -1,0 +1,39 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+truncate table Action_Option_Cash_Payout
+truncate table Action_Option_Security_Movement
+truncate table Announcement_EventOption
+truncate table Narratives
+delete  Announcement_Event
+delete Swift_Message
+
+
+/****** Script for SelectTopNRows command from SSMS  ******/
+select * from  Action_Option_Cash_Payout
+select * from  Action_Option_Security_Movement
+select * from  Announcement_EventOption
+select * from  Narratives
+select * from   Announcement_Event
+select * from Swift_Message
+
+
+UPDTES
+PatternDualCurrencyOneAmount
+PatternFinancial Instrument
+RateRule
+AnnouncementCashPayoutService
+AnnouncementCashPayout
+AnnoucementOptionExtraAmount
+CACashPayoutService
+
+Secmove Class event
+AnnouncementSecPayoutService
+AnnouncementSecPayout
+CaSecPayoutService
+
+
+Persistance DefaultCoreModule
+AnnoucementDBStoreRepository
+CaEventManagerRepository 
+DefaultCoreModule CA Services
+
+
