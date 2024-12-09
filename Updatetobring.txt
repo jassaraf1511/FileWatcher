@@ -1,0 +1,47 @@
+Safra.CorporateActions.App.Repositories
+CaEventManagerRepository
+
+
+
+private DateTime? getPayDate()
+{
+    DateTime? payDate = null;
+
+    if (annoucementEventDetail.AnnouncementEvent.PaymentDate != null)
+    {
+        payDate = annoucementEventDetail.AnnouncementEvent.PaymentDate;
+        return payDate;
+    }
+    if (annoucementEventDetail.AnnouncementSecPayouts != null)
+    {
+        foreach (AnnouncementSecPayout secPayout in annoucementEventDetail.AnnouncementSecPayouts)
+        {
+            if (secPayout.PaymentDate != null && payDate == null)
+            {
+                payDate = secPayout.PaymentDate;
+            }
+
+            if (secPayout.PaymentDate != null && payDate == null && secPayout.PaymentDate > payDate)
+            {
+                payDate = secPayout.PaymentDate;
+            }
+        }
+    }
+
+    if (annoucementEventDetail.AnnouncementCashPayouts != null)
+    {
+        foreach (AnnouncementCashPayout cashPayout in annoucementEventDetail.AnnouncementCashPayouts)
+        {
+            if (cashPayout.PaymentDate != null && payDate == null)
+            {
+                payDate = cashPayout.PaymentDate;
+            }
+
+            if (cashPayout.PaymentDate != null && payDate == null && cashPayout.PaymentDate > payDate)
+            {
+                payDate = cashPayout.PaymentDate;
+            }
+        }
+    }
+    return payDate;
+}
